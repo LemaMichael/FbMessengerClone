@@ -9,21 +9,21 @@
 /* Begin PBXBuildFile section */
 		4C40793E1F18302200F9F49E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40793D1F18302200F9F49E /* AppDelegate.swift */; };
 		4C4079401F18302200F9F49E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40793F1F18302200F9F49E /* ViewController.swift */; };
-		4C4079431F18302200F9F49E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C4079411F18302200F9F49E /* Main.storyboard */; };
 		4C4079461F18302200F9F49E /* fbMessenger.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C4079441F18302200F9F49E /* fbMessenger.xcdatamodeld */; };
 		4C4079481F18302200F9F49E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C4079471F18302200F9F49E /* Assets.xcassets */; };
 		4C40794B1F18302200F9F49E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C4079491F18302200F9F49E /* LaunchScreen.storyboard */; };
+		4C4079541F1848F600F9F49E /* ConstraintsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4079531F1848F600F9F49E /* ConstraintsExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4C40793A1F18302200F9F49E /* fbMessenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fbMessenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C40793D1F18302200F9F49E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C40793F1F18302200F9F49E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		4C4079421F18302200F9F49E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4C4079451F18302200F9F49E /* fbMessenger.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = fbMessenger.xcdatamodel; sourceTree = "<group>"; };
 		4C4079471F18302200F9F49E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C40794A1F18302200F9F49E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C40794C1F18302200F9F49E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C4079531F1848F600F9F49E /* ConstraintsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintsExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,13 +58,21 @@
 			children = (
 				4C40793D1F18302200F9F49E /* AppDelegate.swift */,
 				4C40793F1F18302200F9F49E /* ViewController.swift */,
-				4C4079411F18302200F9F49E /* Main.storyboard */,
+				4C4079521F1848D500F9F49E /* Extenstions */,
 				4C4079471F18302200F9F49E /* Assets.xcassets */,
 				4C4079491F18302200F9F49E /* LaunchScreen.storyboard */,
 				4C40794C1F18302200F9F49E /* Info.plist */,
 				4C4079441F18302200F9F49E /* fbMessenger.xcdatamodeld */,
 			);
 			path = fbMessenger;
+			sourceTree = "<group>";
+		};
+		4C4079521F1848D500F9F49E /* Extenstions */ = {
+			isa = PBXGroup;
+			children = (
+				4C4079531F1848F600F9F49E /* ConstraintsExtension.swift */,
+			);
+			name = Extenstions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -99,6 +107,7 @@
 				TargetAttributes = {
 					4C4079391F18302200F9F49E = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = MFNQ54N2S6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -128,7 +137,6 @@
 			files = (
 				4C40794B1F18302200F9F49E /* LaunchScreen.storyboard in Resources */,
 				4C4079481F18302200F9F49E /* Assets.xcassets in Resources */,
-				4C4079431F18302200F9F49E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +149,7 @@
 			files = (
 				4C4079401F18302200F9F49E /* ViewController.swift in Sources */,
 				4C4079461F18302200F9F49E /* fbMessenger.xcdatamodeld in Sources */,
+				4C4079541F1848F600F9F49E /* ConstraintsExtension.swift in Sources */,
 				4C40793E1F18302200F9F49E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,14 +157,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		4C4079411F18302200F9F49E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4C4079421F18302200F9F49E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		4C4079491F18302200F9F49E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -266,6 +267,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = MFNQ54N2S6;
 				INFOPLIST_FILE = fbMessenger/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaeLema.fbMessenger;
@@ -278,6 +280,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = MFNQ54N2S6;
 				INFOPLIST_FILE = fbMessenger/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaeLema.fbMessenger;
