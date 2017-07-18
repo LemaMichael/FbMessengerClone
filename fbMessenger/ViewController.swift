@@ -50,7 +50,7 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     
     
 }
-
+//: For each of the cell's in the UICollectionView
 class FriendsCell: BaseCell {
     
     
