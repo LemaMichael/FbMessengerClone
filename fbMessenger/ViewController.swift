@@ -8,10 +8,12 @@
 
 import UIKit
 
+
 class FriendsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     private let cellId = "cellId"
     
+    var messages: [Message]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,18 +27,34 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView?.alwaysBounceVertical = true
         
         
-        collectionView?.register(FriendsCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        
+        setUpData()
     }
     
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        //: Safely unwrap optional 
+        if let count = messages?.count {
+            return count
+        }
+        //: If there are no objects in the messages array, return 0
+        return 0
     }
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+       // return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
+        
+        if let message = messages?[indexPath.item] {
+            cell.message = message
+        }
+        
+        
+        return cell
     }
     
     
@@ -51,8 +69,36 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     
 }
 //: For each of the cell's in the UICollectionView
-class FriendsCell: BaseCell {
+class MessageCell: BaseCell {
     
+    var message: Message? {
+        
+        didSet {
+            nameLabel.text = message?.friend?.name
+            
+            if let profileImageName = message?.friend?.profileImageName {
+                profileImageView.image = UIImage(named: profileImageName)
+                hasReadImageView.image = UIImage(named: profileImageName)
+                
+                
+            }
+            
+            messageLabel.text = message?.text
+            
+            
+            //: Modify time label
+            if let date = message?.date {
+                
+                let dateFormatter = DateFormatter()
+                 //: h, represents the hour, mm represents the minutes, and a is the am or pm
+                dateFormatter.dateFormat = "h:mm a"
+                
+                //: Update the cell timeLabel with the current date
+                timeLabel.text = dateFormatter.string(from: date as Date)
+            }
+ 
+        }
+    }
     
     let profileImageView: UIImageView = {
         
