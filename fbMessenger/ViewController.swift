@@ -65,6 +65,18 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
         return CGSize(width: view.frame.width, height: 100)
     }
     
+    //: When the user taps on a cell, a new UICollectionViewController will appear for the messages
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //: A CollectionViewController needs a collectionViewLayout with layout being a UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
+        let controller = ChatLogControlller(collectionViewLayout: layout)
+        
+        //: The row of the friend the user clicks on
+        controller.friend = messages?[indexPath.item].friend
+        
+        navigationController?.pushViewController(controller, animated: true)
+    }
     
     
 }
@@ -276,6 +288,7 @@ class MessageCell: BaseCell {
 
 class BaseCell: UICollectionViewCell {
     
+    //: The setUpViews() is called in init(frame) which is called whenever the cell is dequeued
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpViews()
@@ -286,8 +299,6 @@ class BaseCell: UICollectionViewCell {
     }
     
     func setUpViews() {
-        backgroundColor = UIColor.blue
-        
     }
 }
 

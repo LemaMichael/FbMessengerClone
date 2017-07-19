@@ -19,6 +19,7 @@
 		4C797DC11F1EDACB005C005F /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C797DBD1F1EDACB005C005F /* Message+CoreDataProperties.swift */; };
 		4C797DC21F1EDACB005C005F /* Friend+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C797DBE1F1EDACB005C005F /* Friend+CoreDataClass.swift */; };
 		4C797DC31F1EDACB005C005F /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C797DBF1F1EDACB005C005F /* Friend+CoreDataProperties.swift */; };
+		4C797DC51F1F08C0005C005F /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C797DC41F1F08C0005C005F /* ChatLogController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		4C797DBD1F1EDACB005C005F /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4C797DBE1F1EDACB005C005F /* Friend+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4C797DBF1F1EDACB005C005F /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4C797DC41F1F08C0005C005F /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				4C40793D1F18302200F9F49E /* AppDelegate.swift */,
 				4C40793F1F18302200F9F49E /* ViewController.swift */,
 				4C797DA11F1ED2AD005C005F /* FriendsControllerHelper.swift */,
+				4C797DC41F1F08C0005C005F /* ChatLogController.swift */,
 				4C4079521F1848D500F9F49E /* Extenstions */,
 				4C4079471F18302200F9F49E /* Assets.xcassets */,
 				4C4079491F18302200F9F49E /* LaunchScreen.storyboard */,
@@ -174,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C797DC51F1F08C0005C005F /* ChatLogController.swift in Sources */,
 				4C4079401F18302200F9F49E /* ViewController.swift in Sources */,
 				4C797DC21F1EDACB005C005F /* Friend+CoreDataClass.swift in Sources */,
 				4C797DC31F1EDACB005C005F /* Friend+CoreDataProperties.swift in Sources */,

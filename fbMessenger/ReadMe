@@ -2,3 +2,6 @@ This clone is based on the tutorial from LetsBuildThatApp.com
 
 -July 18, 2017:
 Part two of the fb messenger app clone is finished. It can create, delete and save the Friend & Message core data objects. 
+
+-July 19, 2017
+Part three of the fb messenger app close is now finished. The app can now display the friend's message(s) when the cell is tapped and all friend messages are sorted by the date the message was created or recieved. 

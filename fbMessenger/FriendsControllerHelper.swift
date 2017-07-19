@@ -40,14 +40,23 @@ extension FriendsController {
             steve.name = "Steve Jobs"
             steve.profileImageName = "steve_profile"
             
-            let messageSteve = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
-            messageSteve.friend = steve
-            messageSteve.text = "Apple is worth over 750 Billion Dollars and is not stopping anytime soon"
-            messageSteve.date = NSDate()
+            
+            createMessageWithText(text: "Hey there", friend: steve, minutesAgo: 3, context: context)
+            createMessageWithText(text: "Apple is worth over 750 Billion Dollars and is not stopping anytime soon", friend: steve, minutesAgo: 2, context: context)
+            createMessageWithText(text: "Now is the time to invest in Apple! ", friend: steve, minutesAgo: 1,  context: context)
+            
+            
+            let donald = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+            donald.name = "Donald Trump"
+            donald.profileImageName = "donald_profile"
+            
+            createMessageWithText(text: "I'm the 45th President of the United States of America", friend: donald, minutesAgo: 5, context: context)
+            
             
             
             
             //: This will save all the core data objects every time the app is launched, creating duplicates... Not good
+            //: UPDATE: ClearData() function solves the problem of erasing the duplicates
             do {
                 try (context.save())
             } catch let err {
@@ -56,6 +65,17 @@ extension FriendsController {
         }
         
         loadData()
+    }
+    
+    
+    private func createMessageWithText(text: String, friend: Friend, minutesAgo: Double, context: NSManagedObjectContext) {
+        
+        let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
+        message.friend = friend
+        message.text = text
+        //: .addingTimeInterval() takes seconds as its arguement
+        message.date = NSDate().addingTimeInterval(-minutesAgo * 60)
+        
     }
     
     
@@ -92,24 +112,78 @@ extension FriendsController {
     
     
     func loadData() {
+        //: loadData is where we fetch out all the entities that are called Message
         
         let delegate = UIApplication.shared.delegate as? AppDelegate
         if let context = delegate?.persistentContainer.viewContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
             
-            do {
-                //: Must downcast the NSFetchRequest as an array of Message objects.. this sets up the messages Array.
+            
+            //: Check if friends is empty
+            if let friends = fetchFriends() {
                 
-                messages = try (context.fetch(fetchRequest) as? [Message])
-            } catch let err {
-                print(err)
+                messages = [Message]()
+                
+                for friend in friends {
+                    //: For clarity of each friend's name
+                    print(friend.name!)
+                    
+                    
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+                    
+                    //: Sort the messages by the date property.
+                    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+                    
+                    fetchRequest.predicate = NSPredicate(format: "friend.name = %@", friend.name!)
+                    fetchRequest.fetchLimit = 1
+                    
+                    
+                    do {
+                        //: Must downcast the NSFetchRequest as an array of Message objects.. this will help set up the messages Array.
+                        let fetchedMessages = try (context.fetch(fetchRequest) as? [Message])
+                        messages?.append(contentsOf: fetchedMessages!)
+                        
+                        
+                    } catch let err {
+                        print(err)
+                    }
+                }
+                
+                /* MARK: Preserve the order of messages
+                    -You use $0 for the first item in the array you're trying to compare
+                    -date is a property of Message
+                    -We compare the second object by using $1
+                */
+                messages = messages?.sorted(by: {$0.date!.compare($1.date! as Date) == .orderedDescending})
+                
             }
-            
-            
         }
         
         
     }
+    
+    
+    
+    private func fetchFriends() -> [Friend]? {
+        
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        
+        if let context = delegate?.persistentContainer.viewContext {
+            
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Friend")
+            
+            do {
+                return try context.fetch(request) as? [Friend]
+            } catch let err {
+                print(err)
+            }
+            
+        }
+        
+        //: If we get here, that means we have a context that is not working
+        return nil
+        
+    }
+    
     
     
     
