@@ -83,6 +83,22 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
 //: For each of the cell's in the UICollectionView
 class MessageCell: BaseCell {
     
+    
+    override var isHighlighted: Bool {
+        didSet {
+            
+            //: isHighlighted will be set to true when user taps a cell and will be false when user releases tap
+            backgroundColor = isHighlighted ? UIColor(red: 0, green: 134/255, blue: 249/255, alpha: 1) : UIColor.white
+             
+            nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+            messageLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+            timeLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+            
+            
+        }
+    }
+    
+    
     var message: Message? {
         
         didSet {
