@@ -53,6 +53,16 @@ extension FriendsController {
             createMessageWithText(text: "I'm the 45th President of the United States of America", friend: donald, minutesAgo: 5, context: context)
             
             
+            let gandi = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+            gandi.name = "Mahatma Gandhi"
+            gandi.profileImageName = "gandhi_profile"
+            createMessageWithText(text: "Hello, nice to meet you...", friend: gandi, minutesAgo: 60 * 24, context: context)
+            
+            let arnold = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+            arnold.name = "Arnold Schwarzenegger"
+            arnold.profileImageName = "arnold_profile"
+            createMessageWithText(text: "Message me when you're free to workout 💪🏻", friend: arnold, minutesAgo: 8 * 60 * 24 , context: context)
+            
             
             
             //: This will save all the core data objects every time the app is launched, creating duplicates... Not good

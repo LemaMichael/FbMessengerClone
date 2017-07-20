@@ -36,7 +36,7 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //: Safely unwrap optional 
+        //: Safely unwrap optional
         if let count = messages?.count {
             return count
         }
@@ -46,7 +46,7 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       // return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        // return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
         
         if let message = messages?[indexPath.item] {
@@ -89,11 +89,10 @@ class MessageCell: BaseCell {
             
             //: isHighlighted will be set to true when user taps a cell and will be false when user releases tap
             backgroundColor = isHighlighted ? UIColor(red: 0, green: 134/255, blue: 249/255, alpha: 1) : UIColor.white
-             
+            
             nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
             messageLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
             timeLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
-            
             
         }
     }
@@ -118,13 +117,32 @@ class MessageCell: BaseCell {
             if let date = message?.date {
                 
                 let dateFormatter = DateFormatter()
-                 //: h, represents the hour, mm represents the minutes, and a is the am or pm
+                //: h, represents the hour, mm represents the minutes, and a is the am or pm
                 dateFormatter.dateFormat = "h:mm a"
+                
+                
+                let elapsedTimeInSeconds = NSDate().timeIntervalSince(date as Date)
+                
+                //: 86,400 seconds in a day
+                let secondsInOneday: TimeInterval = 60 * 60 * 24
+                
+                
+                //: If the elapsedTimeInSeconds is greater than a week, change the dateFormat
+                if elapsedTimeInSeconds > 7 * secondsInOneday {
+                    
+                    dateFormatter.dateFormat = "MM/dd/yy"
+                    
+                //: If the elapsedTimeInSeconds is greater than one day, change the dateFormat
+                } else if elapsedTimeInSeconds > secondsInOneday {
+                    
+                    //: "EEE" specifies a 3 letter day abbreviation of day name, Wednesday ->  Wed
+                    dateFormatter.dateFormat = "EEE"
+                }
                 
                 //: Update the cell timeLabel with the current date
                 timeLabel.text = dateFormatter.string(from: date as Date)
             }
- 
+            
         }
     }
     
@@ -151,7 +169,7 @@ class MessageCell: BaseCell {
     
     
     let nameLabel: UILabel = {
-       
+        
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
         label.text = "Friend's Name"
@@ -160,7 +178,7 @@ class MessageCell: BaseCell {
     }()
     
     let messageLabel: UILabel = {
-       
+        
         let label = UILabel()
         label.textColor = UIColor.darkGray
         label.font = UIFont.systemFont(ofSize: 14)
@@ -170,7 +188,7 @@ class MessageCell: BaseCell {
     }()
     
     let timeLabel: UILabel = {
-       
+        
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .right
@@ -187,7 +205,7 @@ class MessageCell: BaseCell {
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
         return imageView
-    
+        
     }()
     
     
@@ -207,25 +225,25 @@ class MessageCell: BaseCell {
         
         /*
          //: This was replaced with the new extension file created in ConstrantsExtension.swift
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        dividerLineView.translatesAutoresizingMaskIntoConstraints = false
+         profileImageView.translatesAutoresizingMaskIntoConstraints = false
+         dividerLineView.translatesAutoresizingMaskIntoConstraints = false
          */
         
         // 2) MARK: Setting the constraints for the imageView
         /*
-        addConstraints(NSLayoutConstraint.constraints(
-            //: Horizontal Width of 68
-            withVisualFormat: "H:|-12-[v0(68)]",
-            options: NSLayoutFormatOptions(),
-            metrics: nil,
-            views: ["v0" : profileImageView]))
-        
-        addConstraints(NSLayoutConstraint.constraints(
-            //: Vertical height of 68
-            withVisualFormat: "V:|-12-[v0(68)]",
-            options: NSLayoutFormatOptions(),
-            metrics: nil,
-            views: ["v0" : profileImageView]))
+         addConstraints(NSLayoutConstraint.constraints(
+         //: Horizontal Width of 68
+         withVisualFormat: "H:|-12-[v0(68)]",
+         options: NSLayoutFormatOptions(),
+         metrics: nil,
+         views: ["v0" : profileImageView]))
+         
+         addConstraints(NSLayoutConstraint.constraints(
+         //: Vertical height of 68
+         withVisualFormat: "V:|-12-[v0(68)]",
+         options: NSLayoutFormatOptions(),
+         metrics: nil,
+         views: ["v0" : profileImageView]))
          */
         
         addConstraintsWithFormat(format: "H:|-12-[v0(68)]", views: profileImageView)
@@ -247,17 +265,17 @@ class MessageCell: BaseCell {
         
         /*
          //: This was replaced with the new extension file created in ConstrantsExtension.swift
-        addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-82-[v0]|",
-            options: NSLayoutFormatOptions(),
-            metrics: nil,
-            views: ["v0" : dividerLineView]))
-        
-        addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "V:[v0(1)]|",
-            options: NSLayoutFormatOptions(),
-            metrics: nil,
-            views: ["v0" : dividerLineView]))
+         addConstraints(NSLayoutConstraint.constraints(
+         withVisualFormat: "H:|-82-[v0]|",
+         options: NSLayoutFormatOptions(),
+         metrics: nil,
+         views: ["v0" : dividerLineView]))
+         
+         addConstraints(NSLayoutConstraint.constraints(
+         withVisualFormat: "V:[v0(1)]|",
+         options: NSLayoutFormatOptions(),
+         metrics: nil,
+         views: ["v0" : dividerLineView]))
          */
         addConstraintsWithFormat(format: "H:|-82-[v0]|", views: dividerLineView)
         addConstraintsWithFormat(format: "V:[v0(1)]|", views: dividerLineView)
@@ -296,7 +314,7 @@ class MessageCell: BaseCell {
         addConstraintsWithFormat(format: "V:|[v0][v1(24)]|", views: nameLabel, messageLabel)
         addConstraintsWithFormat(format: "V:|[v0(24)]", views: timeLabel)
         addConstraintsWithFormat(format: "V:[v0(20)]|", views: hasReadImageView)
-
+        
         
     }
     
