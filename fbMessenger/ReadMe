@@ -7,3 +7,6 @@ Part two of the fb messenger app clone is finished. It can create, delete and sa
 Part three of the fb messenger app close is now finished. The app can now display the friend's message(s) when the cell is tapped and all friend messages are sorted by the date the message was created or recieved. 
 
 For part four of the app, the Tab Bar Menu was created with its associated UIViewControllers, cell messages can be highlighted when tapped, and the date format is shown correctly when a message is recieved. 
+
+-July 22, 2017
+Part five focused on creating chat bubbles for each message and presenting the profile image to the left of the messages.
