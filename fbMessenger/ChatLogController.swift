@@ -59,18 +59,25 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         //: Set the cell's messageTextView with the correct message (text) inside the messages array
         cell.messageTextView.text = messages?[indexPath.item].text
         
-        //: Changing the width of each cell to 250
-        if let messageText = messages?[indexPath.item].text {
+        //: Safe unwrapping the message text and profile image
+        if let messageText = messages?[indexPath.item].text, let profileImageName = messages?[indexPath.item].friend?.profileImageName {
             
+            //: Display the cell's profile image
+            cell.profileImageView.image = UIImage(named: profileImageName)
+            
+            
+            //: Changing the width of each cell to 250
             let size = CGSize(width: 250, height: 1000)
             let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
             let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18)], context: nil)
             
-            //: Added 8 pixels in the x position to give the messageTextView more left spacing
-            cell.messageTextView.frame = CGRect(x: 8, y: 0, width: 250 + 16, height: estimatedFrame.height + 20)
+            
+            
+            //: Added 8 pixels in the x position to give the messageTextView more left spacing and 40 more pixels to show the profile image
+            cell.messageTextView.frame = CGRect(x: 8 + 48, y: 0, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
             
             //: The following line sets the cell's textBubbleView frame, also added 8 pixels to the width since the messageTextView's x position has changed.
-            cell.textBubbleView.frame = CGRect(x: 0, y: 0, width: 250 + 16 + 8, height: estimatedFrame.height + 20)
+            cell.textBubbleView.frame = CGRect(x: 48, y: 0, width: estimatedFrame.width + 16 + 8, height: estimatedFrame.height + 20)
         }
         
         
@@ -123,6 +130,15 @@ class ChatLogMessageCell: BaseCell {
         return view
     }()
     
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        
+        imageView.layer.cornerRadius = 15
+        imageView.layer.masksToBounds = true
+        return imageView
+    }()
+    
     override func setUpViews() {
         super.setUpViews()
         
@@ -132,6 +148,13 @@ class ChatLogMessageCell: BaseCell {
         
         //: add messageTextView onto the hierarchy of the cell
         addSubview(messageTextView)
+        
+        addSubview(profileImageView)
+        //: Constraints for the profileImageView inside the cell
+        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: profileImageView)
+        addConstraintsWithFormat(format: "V:[v0(30)]|", views: profileImageView)
+        profileImageView.backgroundColor = UIColor.red
+        
         
         //: Constraints for the messageTextView inside the cell
         /* Needed to remove both constraints to let collectionView(_collectionView:cellForItemAt) modify the cell width and height
