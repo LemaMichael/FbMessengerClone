@@ -42,7 +42,7 @@ extension FriendsController {
             
             
             createMessageWithText(text: "Hey there", friend: steve, minutesAgo: 3, context: context)
-            createMessageWithText(text: "Apple is worth over 750 Billion Dollars and is not stopping anytime soon", friend: steve, minutesAgo: 2, context: context)
+            createMessageWithText(text: "Apple is worth over 750 Billion Dollars and is not stopping anytime soon. With the new iPhone being released soon, many investors are choosing Apple as their next stock pick.", friend: steve, minutesAgo: 2, context: context)
             createMessageWithText(text: "Now is the time to invest in Apple! ", friend: steve, minutesAgo: 1,  context: context)
             
             
