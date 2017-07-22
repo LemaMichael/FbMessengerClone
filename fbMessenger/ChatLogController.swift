@@ -103,6 +103,12 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     }
  
     
+    //: Without this method, the first cell will start at the top of the navigation bar's bottom
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        //: This will give 8 pixels for each section (we only have 1 section) 
+        return UIEdgeInsetsMake(8, 0, 0, 0)
+    }
+    
     
 }
 
