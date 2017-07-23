@@ -12,3 +12,7 @@ For part four of the app, the Tab Bar Menu was created with its associated UIVie
 Part five focused on creating chat bubbles for each message and presenting the profile image to the left of the messages.
 
 In part six, chat bubbles were modified to have tails for incoming and outgoing messages. Also, chat bubbles are now blue for outgoing messages.
+
+-July 23, 2017
+In part seven, a text field and send button is added to type messages. The UI is handled when the keyboard presents itself and both messages and text field animate above the keyboard.
+
