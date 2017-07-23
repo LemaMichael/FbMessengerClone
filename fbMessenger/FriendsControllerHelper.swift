@@ -44,18 +44,18 @@ extension FriendsController {
             donald.name = "Donald Trump"
             donald.profileImageName = "donald_profile"
             
-            createMessageWithText(text: "I'm the 45th President of the United States of America", friend: donald, minutesAgo: 5, context: context)
+            FriendsController.createMessageWithText(text: "I'm the 45th President of the United States of America", friend: donald, minutesAgo: 5, context: context)
             
             
             let gandi = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
             gandi.name = "Mahatma Gandhi"
             gandi.profileImageName = "gandhi_profile"
-            createMessageWithText(text: "Hello, nice to meet you...", friend: gandi, minutesAgo: 60 * 24, context: context)
+            FriendsController.createMessageWithText(text: "Hello, nice to meet you...", friend: gandi, minutesAgo: 60 * 24, context: context)
             
             let arnold = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
             arnold.name = "Arnold Schwarzenegger"
             arnold.profileImageName = "arnold_profile"
-            createMessageWithText(text: "Message me when you're free to workout 💪🏻", friend: arnold, minutesAgo: 8 * 60 * 24 , context: context)
+            FriendsController.createMessageWithText(text: "Message me when you're free to workout 💪🏻", friend: arnold, minutesAgo: 8 * 60 * 24 , context: context)
             
             
             
@@ -78,24 +78,24 @@ extension FriendsController {
         steve.profileImageName = "steve_profile"
         
         
-        createMessageWithText(text: "Hey there", friend: steve, minutesAgo: 3, context: context)
-        createMessageWithText(text: "Apple is worth over 750 Billion Dollars and is not stopping anytime soon. With the new iPhone being released soon, many investors are choosing Apple as their next stock pick.", friend: steve, minutesAgo: 2, context: context)
-        createMessageWithText(text: "Now is the time to invest in Apple! ", friend: steve, minutesAgo: 1,  context: context)
+        FriendsController.createMessageWithText(text: "Hey there", friend: steve, minutesAgo: 3, context: context)
+        FriendsController.createMessageWithText(text: "Apple is worth over 750 Billion Dollars and is not stopping anytime soon. With the new iPhone being released soon, many investors are choosing Apple as their next stock pick.", friend: steve, minutesAgo: 2, context: context)
+        FriendsController.createMessageWithText(text: "Now is the time to invest in Apple! ", friend: steve, minutesAgo: 1,  context: context)
         
         //: My response message
-        createMessageWithText(text: "I'll buy shares of Apple if you send me the iPhone 8 before September 😄", friend: steve, minutesAgo: 1, context: context, isSender: true)
+        FriendsController.createMessageWithText(text: "I'll buy shares of Apple if you send me the iPhone 8 before September 😄", friend: steve, minutesAgo: 1, context: context, isSender: true)
         
-        createMessageWithText(text: "Sorry, I can't do that but I could give you a sneak peek of iOS 11 instead. It is amazing!", friend: steve, minutesAgo: 1,  context: context)
+        FriendsController.createMessageWithText(text: "Sorry, I can't do that but I could give you a sneak peek of iOS 11 instead. It is amazing!", friend: steve, minutesAgo: 1,  context: context)
  
-        createMessageWithText(text: "Sure", friend: steve, minutesAgo: 1, context: context, isSender: true)
-        createMessageWithText(text: ":)", friend: steve, minutesAgo: 1, context: context, isSender: true)
+        FriendsController.createMessageWithText(text: "Sure", friend: steve, minutesAgo: 1, context: context, isSender: true)
+        FriendsController.createMessageWithText(text: ":)", friend: steve, minutesAgo: 1, context: context, isSender: true)
 
  
     }
     
     
     
-    private func createMessageWithText(text: String, friend: Friend, minutesAgo: Double, context: NSManagedObjectContext, isSender: Bool = false) {
+    static func createMessageWithText(text: String, friend: Friend, minutesAgo: Double, context: NSManagedObjectContext, isSender: Bool = false) -> Message {
         
         let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
         message.friend = friend
@@ -105,6 +105,8 @@ extension FriendsController {
         
         //: Check the messenger sender 
         message.isSender = isSender
+        
+        return message
         
         
     }
