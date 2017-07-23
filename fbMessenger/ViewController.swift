@@ -15,6 +15,11 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     
     var messages: [Message]?
     
+    override func viewWillAppear(_ animated: Bool) {
+        //: Bring back the TabBar when the user goes back to the chat lists
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

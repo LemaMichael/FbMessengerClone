@@ -38,6 +38,10 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //: Hide tabBar when messages list appears
+        tabBarController?.tabBar.isHidden = true
+        
+        
         collectionView?.backgroundColor = UIColor.white
         
         //: We must register the cell class
