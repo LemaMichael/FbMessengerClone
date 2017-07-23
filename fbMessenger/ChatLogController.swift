@@ -24,17 +24,17 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
             messages = friend?.messages?.allObjects as? [Message]
             
             
-            /* 
+            /*
              -Sort the messages by its date.
-             -(Without this the messages in the ChatLogController will not be in order 
-              because the fetch order of the friend?.messages?.allObjects is not in any particular order)
-            */
+             -(Without this the messages in the ChatLogController will not be in order
+             because the fetch order of the friend?.messages?.allObjects is not in any particular order)
+             */
             messages = messages?.sorted(by: {$0.date!.compare($1.date! as Date) == .orderedAscending})
-
+            
         }
         
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,7 +42,7 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         
         //: We must register the cell class
         collectionView?.register(ChatLogMessageCell.self, forCellWithReuseIdentifier: cellId)
-    
+        
     }
     
     
@@ -72,12 +72,36 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
             let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18)], context: nil)
             
             
+            //: Message is from another user
+            if !message.isSender {
+                
+                //: Added 8 pixels in the x position to give the messageTextView more left spacing and 40 more pixels to show the profile image
+                cell.messageTextView.frame = CGRect(x: 8 + 48, y: 0, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
+                
+                //: The following line sets the cell's textBubbleView frame, also added 8 pixels to the width since the messageTextView's x position has changed.
+                cell.textBubbleView.frame = CGRect(x: 48, y: 0, width: estimatedFrame.width + 16 + 8, height: estimatedFrame.height + 20)
             
-            //: Added 8 pixels in the x position to give the messageTextView more left spacing and 40 more pixels to show the profile image
-            cell.messageTextView.frame = CGRect(x: 8 + 48, y: 0, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
-            
-            //: The following line sets the cell's textBubbleView frame, also added 8 pixels to the width since the messageTextView's x position has changed.
-            cell.textBubbleView.frame = CGRect(x: 48, y: 0, width: estimatedFrame.width + 16 + 8, height: estimatedFrame.height + 20)
+                cell.profileImageView.isHidden = false
+                
+                //: It is important to have these two lines for both outgoing and incoming messages because when the cells get recycled, it resets all its following properties.
+                cell.textBubbleView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+                cell.messageTextView.textColor = UIColor.black
+                
+            } else {
+                
+                //: Message is from the user
+        
+                cell.messageTextView.frame = CGRect(x: view.frame.width - estimatedFrame.width - 16 - 16, y: 0, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
+                
+                cell.textBubbleView.frame = CGRect(x: view.frame.width - estimatedFrame.width - 16 - 8 - 16, y: 0, width: estimatedFrame.width + 16 + 8, height: estimatedFrame.height + 20)
+                
+                cell.profileImageView.isHidden = true
+                
+                //: Because the message is from the user, I want the chat bubble to be a blue color 
+                cell.textBubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
+                cell.messageTextView.textColor = UIColor.white
+                
+            }
         }
         
         
@@ -87,7 +111,7 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //: Safe unwrapping of the actual text inside each row 
+        //: Safe unwrapping of the actual text inside each row
         if let messageText = messages?[indexPath.item].text {
             
             let size = CGSize(width: 250, height: 1000)
@@ -101,11 +125,11 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         }
         return CGSize(width: view.frame.width, height: 100)
     }
- 
+    
     
     //: Without this method, the first cell will start at the top of the navigation bar's bottom
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        //: This will give 8 pixels for each section (we only have 1 section) 
+        //: This will give 8 pixels for each section (we only have 1 section)
         return UIEdgeInsetsMake(8, 0, 0, 0)
     }
     
@@ -116,7 +140,7 @@ class ChatLogMessageCell: BaseCell {
     
     
     let messageTextView: UITextView = {
-       let textView = UITextView()
+        let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 18)
         textView.text = "Sample message"
         textView.backgroundColor = UIColor.clear
@@ -164,9 +188,9 @@ class ChatLogMessageCell: BaseCell {
         
         //: Constraints for the messageTextView inside the cell
         /* Needed to remove both constraints to let collectionView(_collectionView:cellForItemAt) modify the cell width and height
-        addConstraintsWithFormat(format: "H:|[v0]|", views: messageTextView)
-        addConstraintsWithFormat(format: "V:|[v0]|", views: messageTextView)
-        */
+         addConstraintsWithFormat(format: "H:|[v0]|", views: messageTextView)
+         addConstraintsWithFormat(format: "V:|[v0]|", views: messageTextView)
+         */
     }
     
     

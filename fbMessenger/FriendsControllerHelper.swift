@@ -151,7 +151,7 @@ extension FriendsController {
                 
                 for friend in friends {
                     //: For clarity of each friend's name
-                    print(friend.name!)
+                   // print(friend.name!)
                     
                     
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
