@@ -87,7 +87,9 @@ extension FriendsController {
         
         createMessageWithText(text: "Sorry, I can't do that but I could give you a sneak peek of iOS 11 instead. It is amazing!", friend: steve, minutesAgo: 1,  context: context)
  
-        createMessageWithText(text: "Sure :)", friend: steve, minutesAgo: 1, context: context, isSender: true)
+        createMessageWithText(text: "Sure", friend: steve, minutesAgo: 1, context: context, isSender: true)
+        createMessageWithText(text: ":)", friend: steve, minutesAgo: 1, context: context, isSender: true)
+
  
     }
     

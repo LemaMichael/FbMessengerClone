@@ -37,7 +37,7 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     
     let messageInputContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.lightGray
+        view.backgroundColor = UIColor.white
         return view
         
     }()
@@ -46,6 +46,15 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         let textField = UITextField()
         textField.placeholder = "Send a message..."
         return textField
+    }()
+    
+    let sendButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Send", for: .normal)
+        let titleColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
+        button.setTitleColor(titleColor, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        return button
     }()
     
     //: The bottomConstraint for the messageInputContanerView will be updated if the keyboard shows up
@@ -109,12 +118,17 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     private func setUpInputComponents() {
         //: Adding the inputTextField to the messageInputContainerView
         messageInputContainerView.addSubview(inputTextField)
-        messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0]|", views: inputTextField)
+        messageInputContainerView.addSubview(sendButton)
+        
+        //: Constraints for the inputTextField and sendButton
+        messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0][v1(60)]|", views: inputTextField, sendButton)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: inputTextField)
+        messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: sendButton)
+        
         
     }
     
-  
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         inputTextField.endEditing(true)
     }
