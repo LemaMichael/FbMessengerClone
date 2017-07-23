@@ -77,6 +77,11 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
             let insertionIndexPath = IndexPath(item: item, section: 0)
             collectionView?.insertItems(at: [insertionIndexPath])
             
+            //: Move the new message to the top of the keyboard
+            collectionView?.scrollToItem(at: insertionIndexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
+            
+            //: Make the text field empty once the message is sent
+            inputTextField.text = nil
             
         } catch let err {
             print(err)
