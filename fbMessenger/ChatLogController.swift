@@ -36,17 +36,20 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     let messageInputContainerView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = UIColor.lightGray
         return view
         
     }()
-
+    
     let inputTextField: UITextField = {
-       let textField = UITextField()
+        let textField = UITextField()
         textField.placeholder = "Send a message..."
         return textField
     }()
+    
+    //: The bottomConstraint for the messageInputContanerView will be updated if the keyboard shows up
+    var bottomConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,9 +66,37 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         //: Adding the messageInputContainerView to the view
         view.addSubview(messageInputContainerView)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: messageInputContainerView)
-        view.addConstraintsWithFormat(format: "V:[v0(48)]|", views: messageInputContainerView)
+        view.addConstraintsWithFormat(format: "V:[v0(48)]", views: messageInputContainerView)
+        
+        
+        bottomConstraint = NSLayoutConstraint(item: messageInputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+        view.addConstraint(bottomConstraint!)
+        
         
         setUpInputComponents()
+        
+        //: Implement a listener for when the keyboard will show up
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: .UIKeyboardWillShow, object: nil)
+        
+        //: Implement a listener for when the keyboard will dismisses itself
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: .UIKeyboardWillHide, object: nil)
+        
+        
+    }
+    
+    func handleKeyboardNotification(notification: NSNotification) {
+        
+        if let userInfo = notification.userInfo {
+            let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect
+            
+            //: check the NSNotification.Name to see if the keyboard will show
+            let isKeyboardShowing = notification.name == .UIKeyboardWillShow
+            
+            
+            //: The bottom constraint will move up when the keyboard displays and move down when it dismisses iteself
+            bottomConstraint?.constant =  isKeyboardShowing ? -(keyboardFrame!.height) : 0
+            
+        }
     }
     
     private func setUpInputComponents() {
@@ -75,7 +106,11 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: inputTextField)
         
     }
-
+    
+  
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        inputTextField.endEditing(true)
+    }
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
