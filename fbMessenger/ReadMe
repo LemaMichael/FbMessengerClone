@@ -16,3 +16,4 @@ In part six, chat bubbles were modified to have tails for incoming and outgoing 
 -July 23, 2017
 In part seven, a text field and send button is added to type messages. The UI is handled when the keyboard presents itself and both messages and text field animate above the keyboard.
 
+For part 8 of the app, the user can send a message and it will appear into the collection view. Also, The collection view can handle new and old messages by its date sent.
