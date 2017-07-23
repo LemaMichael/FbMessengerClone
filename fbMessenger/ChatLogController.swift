@@ -96,6 +96,13 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
             //: The bottom constraint will move up when the keyboard displays and move down when it dismisses iteself
             bottomConstraint?.constant =  isKeyboardShowing ? -(keyboardFrame!.height) : 0
             
+            
+            //: This will help animate the messageInputContainerView when its bottom constraint is updated
+            UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: { (completed) in
+            })
+            
         }
     }
     
