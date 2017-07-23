@@ -10,3 +10,5 @@ For part four of the app, the Tab Bar Menu was created with its associated UIVie
 
 -July 22, 2017
 Part five focused on creating chat bubbles for each message and presenting the profile image to the left of the messages.
+
+In part six, chat bubbles were modified to have tails for incoming and outgoing messages. Also, chat bubbles are now blue for outgoing messages.
