@@ -94,7 +94,8 @@ extension FriendsController {
     }
     
     
-    
+    //: adding @discardableResult suppresses warnings for not using the return value of the createMessageWithText function
+    @discardableResult
     static func createMessageWithText(text: String, friend: Friend, minutesAgo: Double, context: NSManagedObjectContext, isSender: Bool = false) -> Message {
         
         let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
