@@ -106,10 +106,16 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
             bottomConstraint?.constant =  isKeyboardShowing ? -(keyboardFrame!.height) : 0
             
             
-            //: This will help animate the messageInputContainerView when its bottom constraint is updated
+            //: This will help animate the messageInputContainerView when its bottom constraint is updated and the message list to move up
             UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }, completion: { (completed) in
+                
+                // only animate to the last item's bottom in the UICollectionView if the keyboard will show
+                if isKeyboardShowing {
+                    let indexPath = IndexPath(item: self.messages!.count - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
+                }
             })
             
         }
@@ -120,7 +126,7 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         //: Add a top border to the messageInputContainerView
         let topBorderView = UIView()
         topBorderView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-
+        
         
         //: Adding the inputTextField, sendButton and the topBorderView to the messageInputContainerView
         messageInputContainerView.addSubview(inputTextField)
