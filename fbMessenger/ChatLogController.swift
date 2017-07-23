@@ -116,14 +116,25 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     private func setUpInputComponents() {
-        //: Adding the inputTextField to the messageInputContainerView
+        
+        //: Add a top border to the messageInputContainerView
+        let topBorderView = UIView()
+        topBorderView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+
+        
+        //: Adding the inputTextField, sendButton and the topBorderView to the messageInputContainerView
         messageInputContainerView.addSubview(inputTextField)
         messageInputContainerView.addSubview(sendButton)
+        messageInputContainerView.addSubview(topBorderView)
         
         //: Constraints for the inputTextField and sendButton
         messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0][v1(60)]|", views: inputTextField, sendButton)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: inputTextField)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: sendButton)
+        
+        //: Constraints for the topBorderView
+        messageInputContainerView.addConstraintsWithFormat(format: "H:|[v0]|", views: topBorderView)
+        messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0(0.5)]", views: topBorderView)
         
         
     }
