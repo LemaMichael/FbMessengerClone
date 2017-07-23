@@ -60,7 +60,7 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         cell.messageTextView.text = messages?[indexPath.item].text
         
         //: Safe unwrapping the message text and profile image
-        if let messageText = messages?[indexPath.item].text, let profileImageName = messages?[indexPath.item].friend?.profileImageName {
+        if let message = messages?[indexPath.item], let messageText = message.text, let profileImageName = message.friend?.profileImageName {
             
             //: Display the cell's profile image
             cell.profileImageView.image = UIImage(named: profileImageName)

@@ -2,7 +2,7 @@
 //  Message+CoreDataClass.swift
 //  fbMessenger
 //
-//  Created by Michael Lema on 7/18/17.
+//  Created by Michael Lema on 7/22/17.
 //  Copyright © 2017 Michael Lema. All rights reserved.
 //
 
