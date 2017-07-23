@@ -82,10 +82,13 @@ extension FriendsController {
         createMessageWithText(text: "Apple is worth over 750 Billion Dollars and is not stopping anytime soon. With the new iPhone being released soon, many investors are choosing Apple as their next stock pick.", friend: steve, minutesAgo: 2, context: context)
         createMessageWithText(text: "Now is the time to invest in Apple! ", friend: steve, minutesAgo: 1,  context: context)
         
-        //: response message
+        //: My response message
         createMessageWithText(text: "I'll buy shares of Apple if you send me the iPhone 8 before September 😄", friend: steve, minutesAgo: 1, context: context, isSender: true)
         
-  
+        createMessageWithText(text: "Sorry, I can't do that but I could give you a sneak peek of iOS 11 instead. It is amazing!", friend: steve, minutesAgo: 1,  context: context)
+ 
+        createMessageWithText(text: "Sure :)", friend: steve, minutesAgo: 1, context: context, isSender: true)
+ 
     }
     
     

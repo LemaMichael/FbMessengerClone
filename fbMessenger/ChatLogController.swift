@@ -79,26 +79,28 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
                 cell.messageTextView.frame = CGRect(x: 8 + 48, y: 0, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
                 
                 //: The following line sets the cell's textBubbleView frame, also added 8 pixels to the width since the messageTextView's x position has changed.
-                cell.textBubbleView.frame = CGRect(x: 48, y: 0, width: estimatedFrame.width + 16 + 8, height: estimatedFrame.height + 20)
-            
+                cell.textBubbleView.frame = CGRect(x: 48 - 10, y: -4, width: estimatedFrame.width + 16 + 8 + 16, height: estimatedFrame.height + 20 + 6)
+                
                 cell.profileImageView.isHidden = false
                 
-                //: It is important to have these two lines for both outgoing and incoming messages because when the cells get recycled, it resets all its following properties.
-                cell.textBubbleView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+                //: It is important to have these three lines for both outgoing and incoming messages because when the cells get recycled, it resets all its following properties.
+                cell.bubbleImageView.image = ChatLogMessageCell.grayBubbleImage
+                cell.bubbleImageView.tintColor = UIColor(white: 0.95, alpha: 1)
                 cell.messageTextView.textColor = UIColor.black
                 
             } else {
                 
                 //: Message is from the user
-        
-                cell.messageTextView.frame = CGRect(x: view.frame.width - estimatedFrame.width - 16 - 16, y: 0, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
                 
-                cell.textBubbleView.frame = CGRect(x: view.frame.width - estimatedFrame.width - 16 - 8 - 16, y: 0, width: estimatedFrame.width + 16 + 8, height: estimatedFrame.height + 20)
+                cell.messageTextView.frame = CGRect(x: view.frame.width - estimatedFrame.width - 16 - 16 - 8, y: 0, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
+                
+                cell.textBubbleView.frame = CGRect(x: view.frame.width - estimatedFrame.width - 16 - 8 - 16 - 10, y: -4, width: estimatedFrame.width + 16 + 8 + 10, height: estimatedFrame.height + 20 + 6)
                 
                 cell.profileImageView.isHidden = true
                 
-                //: Because the message is from the user, I want the chat bubble to be a blue color 
-                cell.textBubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
+                //: Because the message is from the user, I want the chat bubble to be a blue color
+                cell.bubbleImageView.image = ChatLogMessageCell.blueBubbleImage
+                cell.bubbleImageView.tintColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
                 cell.messageTextView.textColor = UIColor.white
                 
             }
@@ -150,7 +152,7 @@ class ChatLogMessageCell: BaseCell {
     
     let textBubbleView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        //view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         
         //: Make the bubbleView rounded
         view.layer.cornerRadius = 15
@@ -169,6 +171,22 @@ class ChatLogMessageCell: BaseCell {
         return imageView
     }()
     
+    static let grayBubbleImage = UIImage(named: "bubble_gray")?.resizableImage(withCapInsets: UIEdgeInsets(top: 22, left: 26, bottom: 22, right: 26)).withRenderingMode(.alwaysTemplate)
+    
+    static let blueBubbleImage = UIImage(named: "bubble_blue")?.resizableImage(withCapInsets: UIEdgeInsets(top: 22, left: 26, bottom: 22, right: 26)).withRenderingMode(.alwaysTemplate)
+    
+    let bubbleImageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        // withRenderingMode(.alwaysTemplate) draws the image as a template image, ignoring its color information
+        imageView.image = ChatLogMessageCell.grayBubbleImage
+        
+        //: Now that the image is rendered as a template image, the tint color can be modified
+        imageView.tintColor = UIColor(white: 0.95, alpha: 1)
+        return imageView
+    }()
+    
+    
     override func setUpViews() {
         super.setUpViews()
         
@@ -184,6 +202,11 @@ class ChatLogMessageCell: BaseCell {
         addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: profileImageView)
         addConstraintsWithFormat(format: "V:[v0(30)]|", views: profileImageView)
         profileImageView.backgroundColor = UIColor.red
+        
+        
+        textBubbleView.addSubview(bubbleImageView)
+        textBubbleView.addConstraintsWithFormat(format: "H:|[v0]|", views: bubbleImageView)
+        textBubbleView.addConstraintsWithFormat(format: "V:|[v0]|", views: bubbleImageView)
         
         
         //: Constraints for the messageTextView inside the cell
