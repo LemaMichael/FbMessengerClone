@@ -35,6 +35,19 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         
     }
     
+    let messageInputContainerView: UIView = {
+       let view = UIView()
+        view.backgroundColor = UIColor.lightGray
+        return view
+        
+    }()
+
+    let inputTextField: UITextField = {
+       let textField = UITextField()
+        textField.placeholder = "Send a message..."
+        return textField
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +60,22 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
         //: We must register the cell class
         collectionView?.register(ChatLogMessageCell.self, forCellWithReuseIdentifier: cellId)
         
+        //: Adding the messageInputContainerView to the view
+        view.addSubview(messageInputContainerView)
+        view.addConstraintsWithFormat(format: "H:|[v0]|", views: messageInputContainerView)
+        view.addConstraintsWithFormat(format: "V:[v0(48)]|", views: messageInputContainerView)
+        
+        setUpInputComponents()
     }
+    
+    private func setUpInputComponents() {
+        //: Adding the inputTextField to the messageInputContainerView
+        messageInputContainerView.addSubview(inputTextField)
+        messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0]|", views: inputTextField)
+        messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: inputTextField)
+        
+    }
+
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
