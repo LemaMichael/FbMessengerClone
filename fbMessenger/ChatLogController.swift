@@ -250,6 +250,7 @@ class ChatLogMessageCell: BaseCell {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 18)
         textView.text = "Sample message"
+        textView.isEditable = false
         textView.backgroundColor = UIColor.clear
         return textView
         
