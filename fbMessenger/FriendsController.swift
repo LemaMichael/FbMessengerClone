@@ -104,12 +104,20 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
         }
         
         //: Simulate a new friend with a new message
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Mark", style: .plain, target: self, action: #selector(addMark))
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Friends", style: .plain, target: self, action: #selector(addFriends))
+     
     }
     
     
-    func addMark() {
+    override func viewDidAppear(_ animated: Bool) {
+        //: Once the user sends a message and goes back to the friend's list, update the collection view to show latest message.
+        collectionView?.reloadData()
+
+    }
+    
+    func addFriends() {
+        
+        navigationItem.setRightBarButton(nil, animated: true)
         
         let delegate = UIApplication.shared.delegate as! AppDelegate
         let context = delegate.persistentContainer.viewContext

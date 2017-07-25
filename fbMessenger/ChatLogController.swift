@@ -70,6 +70,10 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     
     func simulate() {
         
+        //: Remove navigation Item once tapped
+        self.navigationItem.setRightBarButton(nil, animated: true)
+        
+        
         let delegate = UIApplication.shared.delegate as! AppDelegate
         let context = delegate.persistentContainer.viewContext
         
