@@ -7,13 +7,71 @@
 //
 
 import UIKit
+import CoreData
 
-
-class FriendsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class FriendsController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
     private let cellId = "cellId"
     
-    var messages: [Message]?
+    //var messages: [Message]?
+    
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<Friend> = {
+        //: fetches the Friend entity from CoreData
+        let fetchRequest = NSFetchRequest<Friend>(entityName: "Friend")
+        
+        //: "An instance of NSFetchedResultsController requires a fetch request with sort descriptors"
+        //: The sortDescriptor is sorting the Friend object by the last message's date and does not sort in ascending order
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "lastMessage.date", ascending: false)]
+        
+        //: Delete/eliminate an empty row if the user has not had a conversation with a friend
+        fetchRequest.predicate = NSPredicate(format: "lastMessage != nil")
+        
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
+    
+    
+    var blockOperations = [BlockOperation]()
+    
+    //: This delegate method, which is part of NSFetchedResultsControllerDelegate, is called every time a new object is inserted to Core Data.
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        if type == .insert {
+            blockOperations.append(BlockOperation(block: { 
+                self.collectionView?.insertItems(at: [newIndexPath!])
+
+            }))
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionView?.performBatchUpdates({
+            
+            //: When we are performing updates, we can use all of the operations in blockOperations
+            //: This loop will run the inserations that are added in the blockOperations.
+            for operation in self.blockOperations {
+                operation.start()
+            }
+            
+
+        }, completion: { (completed) in
+            
+            let lastItem = self.fetchedResultsController.sections![0].numberOfObjects - 1
+            let indexPath = IndexPath(item: lastItem, section: 0)
+            
+            //: Scroll to the new message that is being entered
+            self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            
+        
+        })
+    }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         //: Bring back the TabBar when the user goes back to the chat lists
@@ -36,15 +94,51 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
         
         
         setUpData()
+        
+        
+        do {
+            //: fetchedResultsController contains all the friend items in the database.
+            try fetchedResultsController.performFetch()
+        } catch let err {
+            print(err)
+        }
+        
+        //: Simulate a new friend with a new message
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Mark", style: .plain, target: self, action: #selector(addMark))
+        
     }
     
     
+    func addMark() {
+        
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        
+        
+        //: We must downcast the NSManagedObject as a Friend
+        let mark = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+        mark.name = "Mark Zuckerberg"
+        mark.profileImageName = "zuckprofile"
+        
+        FriendsController.createMessageWithText(text:  "Hello there, please join my company", friend: mark, minutesAgo: 0, context: context)
+        
+        
+        //: Lets add another Friend with a message to the collectionView
+        let bill = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+        bill.name = "Bill Gates"
+        bill.profileImageName = "billProfile"
+        
+        FriendsController.createMessageWithText(text: "Come join Microsoft", friend: bill, minutesAgo: 0, context: context)
+        
+    }
+    
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //: Safely unwrap optional
-        if let count = messages?.count {
+        
+        if let count = fetchedResultsController.sections?[section].numberOfObjects {
             return count
         }
+        
         //: If there are no objects in the messages array, return 0
         return 0
     }
@@ -54,10 +148,10 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
         // return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
         
-        if let message = messages?[indexPath.item] {
-            cell.message = message
-        }
+        let friend = fetchedResultsController.object(at: indexPath)
         
+        //: Friend object has been updated to contain a new property called lastMessage
+        cell.message = friend.lastMessage
         
         return cell
     }
@@ -77,8 +171,11 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
         let layout = UICollectionViewFlowLayout()
         let controller = ChatLogControlller(collectionViewLayout: layout)
         
+        let friend = fetchedResultsController.object(at: indexPath)
+        
+        
         //: The row of the friend the user clicks on
-        controller.friend = messages?[indexPath.item].friend
+        controller.friend = friend
         
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -137,7 +234,7 @@ class MessageCell: BaseCell {
                     
                     dateFormatter.dateFormat = "MM/dd/yy"
                     
-                //: If the elapsedTimeInSeconds is greater than one day, change the dateFormat
+                    //: If the elapsedTimeInSeconds is greater than one day, change the dateFormat
                 } else if elapsedTimeInSeconds > secondsInOneday {
                     
                     //: "EEE" specifies a 3 letter day abbreviation of day name, Wednesday ->  Wed

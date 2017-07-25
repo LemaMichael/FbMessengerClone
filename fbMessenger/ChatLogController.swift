@@ -127,7 +127,6 @@ class ChatLogControlller: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     
-    //:
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView?.performBatchUpdates({ 
             //: When we are performing updates, we can use all of the operations in blockOperations

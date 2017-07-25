@@ -24,20 +24,8 @@ extension FriendsController {
         //: In Swift 3, you can access the NSManagedObjectContext via the viewContext of the persistentContainter
         if let context = delegate?.persistentContainer.viewContext {
             
-            //: We must downcast the NSManagedObject as a Friend
-            let mark = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
-            mark.name = "Mark Zuckerberg"
-            mark.profileImageName = "zuckprofile"
-            
-            //: We must downcast the NSManagedObject as a Message
-            let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
-            message.friend = mark
-            message.text = "Hello there, please join my company"
-            message.date = NSDate()
-            
             
             createSteveMessagesWithContext(context: context)
-            
             
             
             let donald = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
@@ -68,7 +56,6 @@ extension FriendsController {
             }
         }
         
-        loadData()
     }
     
     private func createSteveMessagesWithContext(context: NSManagedObjectContext) {
@@ -107,6 +94,9 @@ extension FriendsController {
         //: Check the messenger sender 
         message.isSender = isSender
         
+        //: Set the friend object's last message property
+        friend.lastMessage = message
+        
         return message
         
         
@@ -144,79 +134,79 @@ extension FriendsController {
     }
     
     
-    
-    func loadData() {
-        //: loadData is where we fetch out all the entities that are called Message
-        
-        let delegate = UIApplication.shared.delegate as? AppDelegate
-        if let context = delegate?.persistentContainer.viewContext {
-            
-            
-            //: Check if friends is empty
-            if let friends = fetchFriends() {
-                
-                messages = [Message]()
-                
-                for friend in friends {
-                    //: For clarity of each friend's name
-                   // print(friend.name!)
-                    
-                    
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
-                    
-                    //: Sort the messages by the date property.
-                    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-                    
-                    fetchRequest.predicate = NSPredicate(format: "friend.name = %@", friend.name!)
-                    fetchRequest.fetchLimit = 1
-                    
-                    
-                    do {
-                        //: Must downcast the NSFetchRequest as an array of Message objects.. this will help set up the messages Array.
-                        let fetchedMessages = try (context.fetch(fetchRequest) as? [Message])
-                        messages?.append(contentsOf: fetchedMessages!)
-                        
-                        
-                    } catch let err {
-                        print(err)
-                    }
-                }
-                
-                /* MARK: Preserve the order of messages
-                    -You use $0 for the first item in the array you're trying to compare
-                    -date is a property of Message
-                    -We compare the second object by using $1
-                */
-                messages = messages?.sorted(by: {$0.date!.compare($1.date! as Date) == .orderedDescending})
-                
-            }
-        }
-        
-        
-    }
-    
-    
-    
-    private func fetchFriends() -> [Friend]? {
-        
-        let delegate = UIApplication.shared.delegate as? AppDelegate
-        
-        if let context = delegate?.persistentContainer.viewContext {
-            
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Friend")
-            
-            do {
-                return try context.fetch(request) as? [Friend]
-            } catch let err {
-                print(err)
-            }
-            
-        }
-        
-        //: If we get here, that means we have a context that is not working
-        return nil
-        
-    }
+    //: WE NO LONGER NEED THIS because we are using a fetchedResultsController
+//    func loadData() {
+//        //: loadData is where we fetch out all the entities that are called Message
+//        
+//        let delegate = UIApplication.shared.delegate as? AppDelegate
+//        if let context = delegate?.persistentContainer.viewContext {
+//            
+//            
+//            //: Check if friends is empty
+//            if let friends = fetchFriends() {
+//                
+//                messages = [Message]()
+//                
+//                for friend in friends {
+//                    //: For clarity of each friend's name
+//                   // print(friend.name!)
+//                    
+//                    
+//                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+//                    
+//                    //: Sort the messages by the date property.
+//                    fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+//                    
+//                    fetchRequest.predicate = NSPredicate(format: "friend.name = %@", friend.name!)
+//                    fetchRequest.fetchLimit = 1
+//                    
+//                    
+//                    do {
+//                        //: Must downcast the NSFetchRequest as an array of Message objects.. this will help set up the messages Array.
+//                        let fetchedMessages = try (context.fetch(fetchRequest) as? [Message])
+//                        messages?.append(contentsOf: fetchedMessages!)
+//                        
+//                        
+//                    } catch let err {
+//                        print(err)
+//                    }
+//                }
+//                
+//                /* MARK: Preserve the order of messages
+//                    -You use $0 for the first item in the array you're trying to compare
+//                    -date is a property of Message
+//                    -We compare the second object by using $1
+//                */
+//                messages = messages?.sorted(by: {$0.date!.compare($1.date! as Date) == .orderedDescending})
+//                
+//            }
+//        }
+//        
+//        
+//    }
+//    
+//    
+//    
+//    private func fetchFriends() -> [Friend]? {
+//        
+//        let delegate = UIApplication.shared.delegate as? AppDelegate
+//        
+//        if let context = delegate?.persistentContainer.viewContext {
+//            
+//            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Friend")
+//            
+//            do {
+//                return try context.fetch(request) as? [Friend]
+//            } catch let err {
+//                print(err)
+//            }
+//            
+//        }
+//        
+//        //: If we get here, that means we have a context that is not working
+//        return nil
+//        
+//    }
     
     
     

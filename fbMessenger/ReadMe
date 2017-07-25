@@ -20,3 +20,5 @@ For part 8 of the app, the user can send a message and it will appear into the c
 
 -July 24, 2017
 For part 9, NSFetchedResultsController is implemented with the UICollectionView to sort and handle messages.
+
+For the last part of the app, NSFetchedResultsController is implemented for the Friend's list controller. 
